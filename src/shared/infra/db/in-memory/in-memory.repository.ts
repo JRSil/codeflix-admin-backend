@@ -12,8 +12,8 @@ export abstract class InMemoryRepository<E extends Entity, EntityId extends Valu
     async insert(entity: E): Promise<void> {
         this.items.push(entity);
     }
-    async bulkInsert(entity: E[]): Promise<void> {
-        this.items.push(...entity);
+    async bulkInsert(entities: E[]): Promise<void> {
+        this.items.push(...entities);
     }
     async update(entity: E): Promise<void> {
         const indexFound = this.items.findIndex((item) => item.entity_id.equals(entity.entity_id));
