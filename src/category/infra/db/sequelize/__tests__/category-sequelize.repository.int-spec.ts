@@ -8,10 +8,11 @@ import {
 import { Category } from '../../../../domain/category.entity';
 import { Uuid } from '../../../../../shared/domain/value-objects/uuid.vo';
 import { CategoryModelMapper } from '../category-model-mapper';
+import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
 
 describe('CategorySequelizeRepository Integration Test', () => {
     let repository: CategorySequelizeRepository;
-    // setupSequelize({ models: [CategoryModel] });
+    setupSequelize({ models: [CategoryModel] });
 
     beforeEach(async () => {
         repository = new CategorySequelizeRepository(CategoryModel);

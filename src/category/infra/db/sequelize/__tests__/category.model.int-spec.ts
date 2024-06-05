@@ -1,9 +1,9 @@
 import { DataType } from 'sequelize-typescript';
 import { CategoryModel } from '../category.model';
-// import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
+import { setupSequelize } from '../../../../../shared/infra/testing/helpers';
 
 describe('CategoryModel Integration Tests', () => {
-    //   setupSequelize({ models: [CategoryModel] });
+    setupSequelize({ models: [CategoryModel] });
 
     test('mapping props', () => {
         const attributesMap = CategoryModel.getAttributes();
