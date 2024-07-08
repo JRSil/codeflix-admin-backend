@@ -33,9 +33,9 @@ export class UpdateCategoryUseCase
             category.deactivate();
         }
 
-        // if (category.notification.hasErrors()) {
-        //   throw new EntityValidationError(category.notification.toJSON());
-        // }
+        if (category.notification.hasErrors()) {
+            throw new EntityValidationError(category.notification.toJSON());
+        }
 
         await this.categoryRepo.update(category);
 

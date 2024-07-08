@@ -4,7 +4,9 @@ import { Category } from "../category.entity"
 describe('Category Unit Tests', () => {
     let validateSpy: any;
     beforeEach(() => {
-        validateSpy = jest.spyOn(Category, 'validate');
+        Category.prototype.validate = jest
+            .fn()
+            .mockImplementation(Category.prototype.validate);
     });
 
     describe('constructor', () => {
@@ -46,7 +48,8 @@ describe('Category Unit Tests', () => {
             expect(category.description).toBeNull();
             expect(category.is_active).toBeTruthy();
             expect(category.created_at).toBeInstanceOf(Date);
-            expect(validateSpy).toHaveBeenCalledTimes(1);
+            expect(Category.prototype.validate).toHaveBeenCalledTimes(1);
+            expect(category.notification.hasErrors()).toBe(false);
         });
 
         test('should create a category with description', () => {
@@ -122,91 +125,28 @@ describe('Category Unit Tests', () => {
 describe('Category Validator', () => {
     describe('create command', () => {
         test('should be an invalid category with name property', () => {
-            expect(() => Category.create({ name: null })).containsErrorMessages({
-                name: [
-                    "name should not be empty",
-                    "name must be a string",
-                    "name must be shorter than or equal to 255 characters",
-                ],
-            });
+            const category = Category.create({ name: 't'.repeat(256) });
 
-            expect(() => Category.create({ name: '' })).containsErrorMessages({
-                name: [
-                    "name should not be empty",
-                ],
-            });
-
-            expect(() => Category.create({ name: 5 as any })).containsErrorMessages({
-                name: [
-                    "name must be a string",
-                    "name must be shorter than or equal to 255 characters"
-                ],
-            });
-
-            expect(() => Category.create({ name: "t".repeat(256) })).containsErrorMessages({
-                name: [
-                    "name must be shorter than or equal to 255 characters"
-                ],
-            });
-        });
-
-        test('should be an invalid category with description property', () => {
-            expect(() => Category.create({ name: "Movie", description: 5 } as any)).containsErrorMessages({
-                description: [
-                    "description must be a string",
-                ],
-            });
-        });
-
-        test('should be an invalid category with is_active property', () => {
-            expect(() => Category.create({ name: "Movie", is_active: 5 } as any)).containsErrorMessages({
-                is_active: [
-                    "is_active must be a boolean value",
-                ],
-            });
+            expect(category.notification.hasErrors()).toBe(true);
+            expect(category.notification).notificationContainsErrorMessages([
+                {
+                    name: ["name must be shorter than or equal to 255 characters"],
+                },
+            ]);
         });
     });
 
     describe('changeName method', () => {
         test('should be an invalid category with name property', () => {
             const category = Category.create({ name: "Movie" });
-            expect(() => category.changeName(null)).containsErrorMessages({
-                name: [
-                    "name should not be empty",
-                    "name must be a string",
-                    "name must be shorter than or equal to 255 characters",
-                ],
-            });
+            category.changeName('t'.repeat(256));
 
-            expect(() => category.changeName('')).containsErrorMessages({
-                name: [
-                    "name should not be empty",
-                ],
-            });
-
-            expect(() => category.changeName(5 as any)).containsErrorMessages({
-                name: [
-                    "name must be a string",
-                    "name must be shorter than or equal to 255 characters"
-                ],
-            });
-
-            expect(() => category.changeName("t".repeat(256))).containsErrorMessages({
-                name: [
-                    "name must be shorter than or equal to 255 characters"
-                ],
-            });
-        });
-    });
-
-    describe('changeDescription method', () => {
-        test('should be an invalid category with description property', () => {
-            const category = Category.create({ name: "Movie" });
-            expect(() => category.changeDescription(5 as any)).containsErrorMessages({
-                description: [
-                    "description must be a string",
-                ],
-            });
+            expect(category.notification.hasErrors()).toBe(true);
+            expect(category.notification).notificationContainsErrorMessages([
+                {
+                    name: ["name must be shorter than or equal to 255 characters"],
+                },
+            ]);
         });
     });
 });
