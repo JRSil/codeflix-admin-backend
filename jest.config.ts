@@ -16,7 +16,7 @@ const config: Config = {
   // cacheDirectory: "/tmp/jest_rs",
 
   // Automatically clear mock calls, instances, contexts and results before every test
-  clearMocks: true,
+  // clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
   // collectCoverage: false,
@@ -33,7 +33,7 @@ const config: Config = {
   // ],
 
   // Indicates which provider should be used to instrument code for coverage
-  coverageProvider: "v8",
+  // coverageProvider: "v8",
 
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
@@ -123,7 +123,7 @@ const config: Config = {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  rootDir: "./src",
+  // rootDir: "./src",
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [
@@ -137,9 +137,6 @@ const config: Config = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: [
-    './shared/infra/testing/expect-helpers.ts'
-  ],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,
@@ -176,11 +173,6 @@ const config: Config = {
   // This option allows use of a custom test runner
   // testRunner: "jest-circus/runner",
 
-  // A map from regular expressions to paths to transformers
-  transform: {
-    '^.+\\.(t|j)s$': '@swc/jest',
-  },
-
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
   //   "/node_modules/",
@@ -198,6 +190,27 @@ const config: Config = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+
+  clearMocks: true,
+  moduleFileExtensions: [
+    "js",
+    "json",
+    "ts"
+  ],
+  rootDir: "src",
+  setupFilesAfterEnv: [
+    './core/shared/infra/testing/expect-helpers.ts'
+  ],
+  testRegex: '.*\\..*spec\\.ts$',
+  transform: {
+    '^.+\\.(t|j)s$': '@swc/jest'
+  },
+  collectCoverageFrom: [
+    "**/*.(t|j)s"
+  ],
+  coverageProvider: "v8",
+  coverageDirectory: "../coverage",
+  testEnvironment: "node"
 };
 
 export default config;
