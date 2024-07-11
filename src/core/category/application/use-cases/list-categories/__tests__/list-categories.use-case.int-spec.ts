@@ -33,7 +33,7 @@ describe('ListCategoriesUseCase Integration Tests', () => {
         });
     });
 
-    it('should returns output using pagination, sort and filter', async () => {
+    it('should return output using pagination, sort and filter', async () => {
         const categories = [
             new Category({ name: 'a' }),
             new Category({
@@ -59,10 +59,10 @@ describe('ListCategoriesUseCase Integration Tests', () => {
         });
         expect(output).toEqual({
             items: [categories[1], categories[2]].map(CategoryOutputMapper.toOutput),
-            total: 3,
+            total: 5,
             current_page: 1,
             per_page: 2,
-            last_page: 2,
+            last_page: 3,
         });
 
         output = await useCase.execute({

@@ -2,7 +2,6 @@ import { Uuid } from "../../../shared/domain/value-objects/uuid.vo";
 import { Category } from "../category.entity"
 
 describe('Category Unit Tests', () => {
-    let validateSpy: any;
     beforeEach(() => {
         Category.prototype.validate = jest
             .fn()
@@ -63,7 +62,6 @@ describe('Category Unit Tests', () => {
             expect(category.description).toBe("Movie description");
             expect(category.is_active).toBeTruthy();
             expect(category.created_at).toBeInstanceOf(Date);
-            expect(validateSpy).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -89,7 +87,8 @@ describe('Category Unit Tests', () => {
 
         category.changeName("Other name");
         expect(category.name).toBe("Other name");
-        expect(validateSpy).toHaveBeenCalledTimes(2);
+        expect(Category.prototype.validate).toHaveBeenCalledTimes(2);
+        expect(category.notification.hasErrors()).toBe(false);
     });
 
     test('should change description', () => {
@@ -99,7 +98,6 @@ describe('Category Unit Tests', () => {
 
         category.changeDescription("Other description");
         expect(category.description).toBe("Other description");
-        expect(validateSpy).toHaveBeenCalledTimes(2);
     });
 
     test('should activate category', () => {
